@@ -3,10 +3,10 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
-  // outras configurações aqui...
+  experimental: {
+    serverActions: true,
+  },
+  // outras configs podem vir aqui
 };
 
-export default withPWA({
-  dest: 'public',
-})(nextConfig);
+export default withPWA(nextConfig);
