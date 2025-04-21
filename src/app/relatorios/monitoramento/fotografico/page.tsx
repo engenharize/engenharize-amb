@@ -33,6 +33,12 @@ export default function RelatorioFotografico() {
     setFotos(atualizadas);
   };
 
+  const removerFoto = (index: number) => {
+    const atualizadas = [...fotos];
+    atualizadas.splice(index, 1);
+    setFotos(atualizadas);
+  };
+
   const seguirParaFinais = () => {
     localStorage.setItem('relatorioFotografico', JSON.stringify(fotos));
     router.push('/relatorios/monitoramento/finais');
@@ -61,15 +67,22 @@ export default function RelatorioFotografico() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
         {fotos.map((foto, index) => (
-          <div key={index} className="bg-white border p-4 rounded shadow-sm">
+          <div key={index} className="bg-green-100 border border-green-300 p-4 rounded shadow-sm relative">
             <img src={foto.url} alt={`Foto ${index + 1}`} className="w-full h-auto rounded mb-2" />
             <input
               type="text"
               placeholder="Legenda da foto"
               value={foto.legenda}
               onChange={(e) => handleLegenda(index, e.target.value)}
-              className="w-full p-2 border border-green-300 rounded"
+              className="w-full p-2 border border-green-300 rounded text-green-800"
             />
+            <button
+              onClick={() => removerFoto(index)}
+              className="absolute top-2 right-2 text-red-600 font-bold hover:text-red-800"
+              title="Remover foto"
+            >
+              ❌
+            </button>
           </div>
         ))}
       </div>

@@ -5,7 +5,15 @@ import { useRouter } from 'next/navigation';
 
 export default function PreencherMonitoramento() {
   const [cliente, setCliente] = useState('');
-  const [residuos, setResiduos] = useState([{ setor: '', tipo: '' }]);
+  const [residuos, setResiduos] = useState([
+    {
+      setor: '',
+      gerado: '',
+      volume: '',
+      acondicionamento: '',
+      destinacao: ''
+    }
+  ]);
   const router = useRouter();
 
   useEffect(() => {
@@ -15,12 +23,21 @@ export default function PreencherMonitoramento() {
 
   const handleChange = (index: number, field: string, value: string) => {
     const atualizados = [...residuos];
-    atualizados[index][field as 'setor' | 'tipo'] = value;
+    atualizados[index][field as keyof typeof atualizados[0]] = value;
     setResiduos(atualizados);
   };
 
   const adicionarLinha = () => {
-    setResiduos([...residuos, { setor: '', tipo: '' }]);
+    setResiduos([
+      ...residuos,
+      {
+        setor: '',
+        gerado: '',
+        volume: '',
+        acondicionamento: '',
+        destinacao: ''
+      }
+    ]);
   };
 
   const seguir = () => {
@@ -36,25 +53,54 @@ export default function PreencherMonitoramento() {
 
       <p className="text-green-800 mb-6 font-medium">Cliente: {cliente}</p>
 
-      <div className="w-full max-w-3xl space-y-4">
+      <div className="w-full max-w-6xl space-y-4">
+        <div className="grid grid-cols-5 gap-2 text-green-800 font-semibold">
+          <span>Setor/Local</span>
+          <span>Resíduo Gerado</span>
+          <span>Volume de Geração</span>
+          <span>Acondicionamento</span>
+          <span>Destinação Final</span>
+        </div>
+
         {residuos.map((linha, index) => (
           <div
             key={index}
-            className="grid grid-cols-2 gap-4 bg-white p-4 border border-green-200 rounded"
+            className="grid grid-cols-5 gap-2 bg-white p-2 border border-green-200 rounded"
           >
             <input
               type="text"
               placeholder="Setor"
               value={linha.setor}
               onChange={(e) => handleChange(index, 'setor', e.target.value)}
-              className="p-2 border border-green-300 rounded"
+              className="p-2 border border-green-300 rounded text-green-800"
             />
             <input
               type="text"
-              placeholder="Resíduos Gerados"
-              value={linha.tipo}
-              onChange={(e) => handleChange(index, 'tipo', e.target.value)}
-              className="p-2 border border-green-300 rounded"
+              placeholder="Resíduo Gerado"
+              value={linha.gerado}
+              onChange={(e) => handleChange(index, 'gerado', e.target.value)}
+              className="p-2 border border-green-300 rounded text-green-800"
+            />
+            <input
+              type="text"
+              placeholder="Volume"
+              value={linha.volume}
+              onChange={(e) => handleChange(index, 'volume', e.target.value)}
+              className="p-2 border border-green-300 rounded text-green-800"
+            />
+            <input
+              type="text"
+              placeholder="Acondicionamento"
+              value={linha.acondicionamento}
+              onChange={(e) => handleChange(index, 'acondicionamento', e.target.value)}
+              className="p-2 border border-green-300 rounded text-green-800"
+            />
+            <input
+              type="text"
+              placeholder="Destinação Final"
+              value={linha.destinacao}
+              onChange={(e) => handleChange(index, 'destinacao', e.target.value)}
+              className="p-2 border border-green-300 rounded text-green-800"
             />
           </div>
         ))}

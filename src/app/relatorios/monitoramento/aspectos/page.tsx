@@ -40,34 +40,37 @@ export default function AspectosImpactos() {
 
       <div className="w-full max-w-5xl space-y-4">
         {linhas.map((linha, index) => (
-          <div key={index} className="grid grid-cols-4 gap-4 bg-white p-4 border border-green-200 rounded">
+          <div
+            key={index}
+            className="grid grid-cols-4 gap-4 bg-white p-4 border border-green-200 rounded"
+          >
             <input
               type="text"
               placeholder="Atividade"
               value={linha.atividade}
               onChange={(e) => handleChange(index, 'atividade', e.target.value)}
-              className="p-2 border border-green-300 rounded"
+              className="p-2 border border-green-300 rounded text-green-800"
             />
             <input
               type="text"
               placeholder="Aspecto"
               value={linha.aspecto}
               onChange={(e) => handleChange(index, 'aspecto', e.target.value)}
-              className="p-2 border border-green-300 rounded"
+              className="p-2 border border-green-300 rounded text-green-800"
             />
             <input
               type="text"
               placeholder="Impacto"
               value={linha.impacto}
               onChange={(e) => handleChange(index, 'impacto', e.target.value)}
-              className="p-2 border border-green-300 rounded"
+              className="p-2 border border-green-300 rounded text-green-800"
             />
             <input
               type="text"
               placeholder="Medidas de Controle"
               value={linha.controle}
               onChange={(e) => handleChange(index, 'controle', e.target.value)}
-              className="p-2 border border-green-300 rounded"
+              className="p-2 border border-green-300 rounded text-green-800"
             />
           </div>
         ))}

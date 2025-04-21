@@ -42,7 +42,7 @@ export default function IndicadoresAmbientais() {
           placeholder="Uso de energia elétrica (kW)"
           value={dados.energia}
           onChange={handleChange}
-          className="w-full p-2 border border-green-300 rounded"
+          className="w-full p-2 border border-green-300 rounded text-green-800"
         />
         <input
           type="number"
@@ -50,7 +50,7 @@ export default function IndicadoresAmbientais() {
           placeholder="Uso de água (m³)"
           value={dados.agua}
           onChange={handleChange}
-          className="w-full p-2 border border-green-300 rounded"
+          className="w-full p-2 border border-green-300 rounded text-green-800"
         />
 
         <button

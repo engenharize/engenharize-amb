@@ -36,7 +36,14 @@ export default function Dashboard() {
         >
           📆 Vencimentos
         </button>
+        <button
+          onClick={() => router.push('/relatorio-vistoria')}
+          className="bg-white shadow-md hover:shadow-xl rounded-2xl p-6 text-center text-green-800 border border-green-300 transition text-lg font-medium"
+        >
+          📋 Relatório de Vistoria
+        </button>
       </div>
     </main>
   );
 }
+
