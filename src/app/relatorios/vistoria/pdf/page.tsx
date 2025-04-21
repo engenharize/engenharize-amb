@@ -1,10 +1,13 @@
 'use client';
+export const dynamic = 'force-dynamic';
 
 import { useEffect, useRef, useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 export default function GerarPDF() {
+  if (typeof window === 'undefined') return null; // evita erro em ambiente server
+
   const [conteudoPronto, setConteudoPronto] = useState(false);
   const pdfRef = useRef<HTMLDivElement>(null);
 
@@ -15,7 +18,7 @@ export default function GerarPDF() {
       scrollY: 0,
       useCORS: true,
       backgroundColor: '#ffffff',
-      scale: 2
+      scale: 2,
     });
     const imgData = canvas.toDataURL('image/jpeg', 1.0);
 
