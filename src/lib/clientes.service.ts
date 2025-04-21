@@ -1,10 +1,14 @@
 import { supabase as supabaseClient } from './supabase';
 
-interface ClienteData {
+export interface ClienteData {
   nome: string;
   cnpj: string;
   endereco: string;
-  proprietario: string;
+  proprietario?: string;
+  email?: string;
+  telefone?: string;
+  cpf?: string;
+  licencaAmbiental?: string;
 }
 
 export async function salvarCliente(data: ClienteData) {
