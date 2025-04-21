@@ -9,16 +9,20 @@ export default function MonitoramentoSelectCliente() {
   const [selecionado, setSelecionado] = useState('');
   const router = useRouter();
 
-  // Carrega os clientes salvos no Supabase
   useEffect(() => {
-    buscarClientes().then(setClientes).catch((err) => {
-      console.error('Erro ao buscar clientes:', err);
-    });
+    buscarClientes()
+      .then((data) => {
+        console.log('Clientes carregados:', data); // 👈 Adicione isso!
+        setClientes(data || []);
+      })
+      .catch((err) => {
+        console.error('Erro ao buscar clientes:', err);
+      });
   }, []);
 
   const handleAvancar = () => {
     if (selecionado) {
-      localStorage.setItem('clienteSelecionado', selecionado); // salva o nome para usar na próxima tela
+      localStorage.setItem('clienteSelecionado', selecionado);
       router.push('/relatorios/monitoramento/preencher');
     }
   };
@@ -39,8 +43,8 @@ export default function MonitoramentoSelectCliente() {
         className="w-full max-w-md p-2 border border-green-300 rounded"
       >
         <option value="">Selecione um cliente cadastrado</option>
-        {clientes.map((cliente, index) => (
-          <option key={index} value={cliente.nome}>
+        {clientes.map((cliente) => (
+          <option key={cliente.id} value={cliente.nome}>
             {cliente.nome}
           </option>
         ))}

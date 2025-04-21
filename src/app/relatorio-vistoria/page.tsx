@@ -10,18 +10,24 @@ export default function VistoriaSelectCliente() {
   const [relatorios, setRelatorios] = useState<any[]>([]);
   const router = useRouter();
 
-  // Busca os clientes do Supabase
   useEffect(() => {
-    buscarClientes().then(setClientes).catch((err) => {
-      console.error('Erro ao buscar clientes:', err);
-    });
+    buscarClientes()
+      .then((data) => {
+        console.log('Clientes encontrados:', data); // 👈 LOG PRA DEBUG
+        setClientes(data || []);
+      })
+      .catch((err) => {
+        console.error('Erro ao buscar clientes:', err.message || err);
+      });
   }, []);
 
   useEffect(() => {
     if (selecionado) {
       const todosRelatorios = localStorage.getItem('relatoriosVistoria');
       if (todosRelatorios) {
-        const relatoriosCliente = JSON.parse(todosRelatorios).filter((r: any) => r.cliente === selecionado);
+        const relatoriosCliente = JSON.parse(todosRelatorios).filter(
+          (r: any) => r.cliente === selecionado
+        );
         setRelatorios(relatoriosCliente);
       } else {
         setRelatorios([]);
@@ -34,7 +40,7 @@ export default function VistoriaSelectCliente() {
   const handleAvancar = () => {
     if (selecionado) {
       localStorage.setItem('clienteSelecionado', selecionado);
-      localStorage.removeItem('relatorioEmEdicao'); // inicia novo
+      localStorage.removeItem('relatorioEmEdicao');
       router.push('/relatorios/vistoria/preencher');
     }
   };
@@ -62,8 +68,8 @@ export default function VistoriaSelectCliente() {
         className="w-full max-w-md p-2 border border-green-300 rounded"
       >
         <option value="">Selecione um cliente cadastrado</option>
-        {clientes.map((cliente, index) => (
-          <option key={index} value={cliente.nome}>
+        {clientes.map((cliente) => (
+          <option key={cliente.id || cliente.nome} value={cliente.nome}>
             {cliente.nome}
           </option>
         ))}
@@ -71,10 +77,15 @@ export default function VistoriaSelectCliente() {
 
       {relatorios.length > 0 && (
         <div className="w-full max-w-2xl bg-white border border-green-200 rounded p-4">
-          <h2 className="text-lg font-semibold text-green-600 mb-2">Relatórios anteriores:</h2>
+          <h2 className="text-lg font-semibold text-green-600 mb-2">
+            Relatórios anteriores:
+          </h2>
           <ul className="space-y-2">
             {relatorios.map((relatorio, index) => (
-              <li key={index} className="flex justify-between items-center border p-2 rounded">
+              <li
+                key={index}
+                className="flex justify-between items-center border p-2 rounded"
+              >
                 <span>📅 {relatorio.data || 'Data não informada'}</span>
                 <button
                   onClick={() => handleEditar(index)}
