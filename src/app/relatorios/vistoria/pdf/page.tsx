@@ -82,7 +82,7 @@ export default function GerarPDF() {
         <h2 style={{ fontSize: '18px', borderBottom: '1px solid #ccc', paddingBottom: '4px', marginTop: '24px' }}>
           Correções Identificadas
         </h2>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
           <thead style={{ backgroundColor: '#e6f4ea' }}>
             <tr>
               <th style={{ border: '1px solid #ccc', padding: '4px' }}>Identificado</th>
