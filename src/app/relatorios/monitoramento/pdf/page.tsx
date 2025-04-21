@@ -67,9 +67,7 @@ export default function GerarPDFPage() {
               rows: [
                 new TableRow({
                   children: ['Setor', 'Resíduo Gerado', 'Volume', 'Acondicionamento', 'Destinação Final'].map(c =>
-                    new TableCell({
-                      children: [new Paragraph({ children: [new TextRun({ text: c, bold: true })] })]
-                    })
+                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: c, bold: true })] })] })
                   )
                 }),
                 ...dados.residuos.map((r: any) =>
@@ -89,9 +87,7 @@ export default function GerarPDFPage() {
               rows: [
                 new TableRow({
                   children: ['Atividade', 'Aspecto', 'Impacto', 'Controle'].map(c =>
-                    new TableCell({
-                      children: [new Paragraph({ children: [new TextRun({ text: c, bold: true })] })]
-                    })
+                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: c, bold: true })] })] })
                   )
                 }),
                 ...dados.aspectos.map((a: any) =>
@@ -129,8 +125,8 @@ export default function GerarPDFPage() {
         <p><strong>CNPJ:</strong> {dados.cliente?.cnpj}</p>
         <p><strong>Endereço:</strong> {dados.cliente?.endereco}</p>
 
-        <h3 style={{ fontWeight: 'bold', paddingTop: '16px' }}>1. Resíduos Gerados</h3>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '9pt', marginBottom: '16px' }}>
+        <h3 style={{ fontWeight: 'bold', marginTop: '16px', marginBottom: '8px' }}>1. Resíduos Gerados</h3>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '9pt' }}>
           <thead>
             <tr style={{ backgroundColor: '#e6f4ea' }}>
               <th style={{ border: '1px solid #ccc', padding: '2px' }}>Setor</th>
@@ -153,12 +149,12 @@ export default function GerarPDFPage() {
           </tbody>
         </table>
 
-        <h3 style={{ fontWeight: 'bold', paddingTop: '16px' }}>2. Indicadores Ambientais</h3>
+        <h3 style={{ fontWeight: 'bold', marginTop: '16px', marginBottom: '8px' }}>2. Indicadores Ambientais</h3>
         <p><strong>Energia:</strong> {dados.indicadores.energia} kW</p>
         <p><strong>Água:</strong> {dados.indicadores.agua} m³</p>
 
-        <h3 style={{ fontWeight: 'bold', paddingTop: '16px' }}>3. Aspectos e Impactos</h3>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '9pt', marginBottom: '16px' }}>
+        <h3 style={{ fontWeight: 'bold', marginTop: '16px', marginBottom: '8px' }}>3. Aspectos e Impactos</h3>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '9pt' }}>
           <thead>
             <tr style={{ backgroundColor: '#e6f4ea' }}>
               <th style={{ border: '1px solid #ccc', padding: '2px' }}>Atividade</th>
@@ -181,7 +177,7 @@ export default function GerarPDFPage() {
 
         {dados.fotos?.length > 0 && (
           <section>
-            <h3 style={{ fontWeight: 'bold', paddingTop: '16px' }}>4. Relatório Fotográfico</h3>
+            <h3 style={{ fontWeight: 'bold', marginTop: '16px', marginBottom: '8px' }}>4. Relatório Fotográfico</h3>
             {dados.fotos.map((foto: any, idx: number) => (
               <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '12px 0' }}>
                 <img
@@ -202,11 +198,12 @@ export default function GerarPDFPage() {
           </section>
         )}
 
-        <h3 style={{ fontWeight: 'bold', paddingTop: '16px' }}>5. Considerações Finais</h3>
+        <h3 style={{ fontWeight: 'bold', marginTop: '16px', marginBottom: '8px' }}>5. Considerações Finais</h3>
         <p>{dados.consideracoes}</p>
 
-        <footer style={{ fontSize: '8pt', textAlign: 'center', borderTop: '1px solid #ccc', marginTop: '16px', paddingTop: '8px' }}>
-          José Henrick M. S. dos Reis CREA 12647D/RO - Criado por EngenhariZE Amb
+        <footer style={{ fontSize: '8pt', textAlign: 'center', borderTop: '1px solid #ccc', marginTop: '12px', paddingTop: '8px' }}>
+          José Henrick M. S. dos Reis CREA 12647D/RO -
+          Criado por EngenhariZE Amb
         </footer>
       </div>
 
