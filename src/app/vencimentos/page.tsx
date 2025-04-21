@@ -76,7 +76,7 @@ export default function Vencimentos() {
       emissaoLicenca,
       vencimentoLicenca,
       vencimentoAVCIP,
-      datasRMA: datasRMA.map((d) => d.toISOString()),
+      datasRMA: datasRMA.map((d: Date) => d.toISOString()),
     };
 
     localStorage.setItem(`vencimentos-${clienteSelecionado}`, JSON.stringify(dados));
@@ -174,17 +174,17 @@ export default function Vencimentos() {
 
       <div className="w-full max-w-xl mt-10 space-y-6">
         {lembretes
-          .map((l) => {
+          .map((l: any) => {
             const avisos: any[] = [];
             const diasLicenca = differenceInCalendarDays(new Date(l.vencimentoLicenca), hoje);
             const diasAVCIP = differenceInCalendarDays(new Date(l.vencimentoAVCIP), hoje);
             const rmaProxima = (l.datasRMA || [])
               .map((r: string) => ({ r, d: differenceInCalendarDays(new Date(r), hoje) }))
-              .filter((d) => d.d <= 30);
+              .filter((d: { d: number }) => d.d <= 30);
 
             if (diasLicenca <= 160) avisos.push({ texto: 'Licença próxima do vencimento', cor: corAlerta(diasLicenca, 'LICENCA') });
             if (diasAVCIP <= 30) avisos.push({ texto: 'AVCIP próximo do vencimento', cor: corAlerta(diasAVCIP, 'AVCIP') });
-            rmaProxima.forEach((r: any) => {
+            rmaProxima.forEach((r: { d: number }) => {
               avisos.push({ texto: `RMA próximo (${r.d} dias)`, cor: corAlerta(r.d, 'RMA') });
             });
 
