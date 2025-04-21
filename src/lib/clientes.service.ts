@@ -1,23 +1,19 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabase as supabaseClient } from './supabase';
 
-const supabaseUrl = 'https://xxxx.supabase.co'; // Substitua pela sua URL
-const supabaseKey = 'sua-chave-anon-public';    // Substitua pela sua chave
-export const supabase = createClient(supabaseUrl, supabaseKey);
-
-// Função para salvar um cliente
-export const salvarCliente = async (cliente: {
+interface ClienteData {
   nome: string;
   cnpj: string;
   endereco: string;
   proprietario: string;
-}) => {
-  const { error } = await supabase.from('clientes').insert([cliente]);
-  if (error) throw new Error(error.message);
-};
+}
 
-// ✅ Função para buscar clientes do Supabase
-export const buscarClientes = async () => {
-  const { data, error } = await supabase.from('clientes').select('*');
+export async function salvarCliente(data: ClienteData) {
+  const { error } = await supabaseClient.from('clientes').insert([data]);
+  if (error) throw new Error(error.message);
+}
+
+export async function buscarClientes() {
+  const { data, error } = await supabaseClient.from('clientes').select('*');
   if (error) throw new Error(error.message);
   return data;
-};
+}
