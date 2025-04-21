@@ -1,15 +1,28 @@
 'use client';
-export const dynamic = 'force-dynamic';
 
 import { useEffect, useRef, useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 export default function GerarPDF() {
-  if (typeof window === 'undefined') return null; // evita erro em ambiente server
-
   const [conteudoPronto, setConteudoPronto] = useState(false);
+  const [dados, setDados] = useState<any>(null);
+  const [correcoes, setCorrecoes] = useState<any[]>([]);
+  const [fotos, setFotos] = useState<any[]>([]);
+  const [consideracoes, setConsideracoes] = useState('');
   const pdfRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const dados = JSON.parse(localStorage.getItem('vistoriaRascunho') || '{}');
+    const correcoes = JSON.parse(localStorage.getItem('correcoesVistoria') || '[]');
+    const fotos = JSON.parse(localStorage.getItem('fotosVistoria') || '[]');
+    const consideracoes = localStorage.getItem('consideracoesFinais') || '';
+    setDados(dados);
+    setCorrecoes(correcoes);
+    setFotos(fotos);
+    setConsideracoes(consideracoes);
+    setConteudoPronto(true);
+  }, []);
 
   const gerarPDF = async () => {
     if (!pdfRef.current) return;
@@ -18,26 +31,17 @@ export default function GerarPDF() {
       scrollY: 0,
       useCORS: true,
       backgroundColor: '#ffffff',
-      scale: 2,
+      scale: 2
     });
     const imgData = canvas.toDataURL('image/jpeg', 1.0);
-
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-    pdf.addImage(imgData, 'JPEG', 10, 0, pdfWidth - 10, pdfHeight); // recuo de 1,5cm
+    pdf.addImage(imgData, 'JPEG', 10, 0, pdfWidth - 10, pdfHeight);
     pdf.save('relatorio_vistoria.pdf');
   };
 
-  useEffect(() => {
-    setTimeout(() => setConteudoPronto(true), 500);
-  }, []);
-
-  const dados = JSON.parse(localStorage.getItem('vistoriaRascunho') || '{}');
-  const correcoes = JSON.parse(localStorage.getItem('correcoesVistoria') || '[]');
-  const fotos = JSON.parse(localStorage.getItem('fotosVistoria') || '[]');
-  const consideracoes = localStorage.getItem('consideracoesFinais') || '';
+  if (!conteudoPronto || !dados) return <p className="p-8 text-center">Carregando...</p>;
 
   return (
     <main className="bg-green-50 min-h-screen p-6 flex flex-col items-center space-y-6">
@@ -49,7 +53,7 @@ export default function GerarPDF() {
           backgroundColor: '#ffffff',
           color: '#1f4d32',
           padding: '24px',
-          paddingLeft: '1cm', // recuo esquerdo
+          paddingLeft: '1cm',
           borderRadius: '8px',
           maxWidth: '768px',
           width: '100%',
@@ -77,7 +81,7 @@ export default function GerarPDF() {
             </tr>
           </thead>
           <tbody>
-            {correcoes.map((c: any, i: number) => (
+            {correcoes.map((c, i) => (
               <tr key={i}>
                 <td style={{ border: '1px solid #ccc', padding: '4px' }}>{c.identificado}</td>
                 <td style={{ border: '1px solid #ccc', padding: '4px' }}>{c.riscos}</td>
@@ -91,7 +95,7 @@ export default function GerarPDF() {
         <h2 style={{ fontSize: '18px', borderBottom: '1px solid #ccc', paddingBottom: '4px', marginTop: '24px' }}>
           Relatório Fotográfico
         </h2>
-        {fotos.map((f: any, i: number) => (
+        {fotos.map((f, i) => (
           <div key={i} style={{ marginBottom: '16px' }}>
             <img
               src={f.url}
