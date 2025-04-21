@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { Document, Packer, Paragraph, Table, TableRow, TableCell, HeadingLevel } from 'docx';
+import { Document, Packer, Paragraph, Table, TableRow, TableCell, HeadingLevel, TextRun } from 'docx';
 import { saveAs } from 'file-saver';
 
 export default function GerarPDFPage() {
@@ -61,7 +61,9 @@ export default function GerarPDFPage() {
               rows: [
                 new TableRow({
                   children: ['Setor', 'Resíduo Gerado', 'Volume', 'Acondicionamento', 'Destinação Final'].map(c =>
-                    new TableCell({ children: [new Paragraph({ text: c, bold: true })] })
+                    new TableCell({
+                      children: [new Paragraph({ children: [new TextRun({ text: c, bold: true })] })]
+                    })
                   )
                 }),
                 ...dados.residuos.map((r: any) =>
@@ -81,7 +83,9 @@ export default function GerarPDFPage() {
               rows: [
                 new TableRow({
                   children: ['Atividade', 'Aspecto', 'Impacto', 'Controle'].map(c =>
-                    new TableCell({ children: [new Paragraph({ text: c, bold: true })] })
+                    new TableCell({
+                      children: [new Paragraph({ children: [new TextRun({ text: c, bold: true })] })]
+                    })
                   )
                 }),
                 ...dados.aspectos.map((a: any) =>
