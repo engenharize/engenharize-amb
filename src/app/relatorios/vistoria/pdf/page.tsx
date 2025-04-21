@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { buscarClientes } from '@/lib/clientes.service';
+import { useRouter } from 'next/navigation';
 
 export default function GerarPDF() {
   const [conteudoPronto, setConteudoPronto] = useState(false);
@@ -12,6 +13,7 @@ export default function GerarPDF() {
   const [fotos, setFotos] = useState<any[]>([]);
   const [consideracoes, setConsideracoes] = useState('');
   const pdfRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const rascunho = JSON.parse(localStorage.getItem('vistoriaRascunho') || '{}');
@@ -140,14 +142,20 @@ export default function GerarPDF() {
         </footer>
       </div>
 
-      {conteudoPronto && (
+      <div className="flex gap-4">
         <button
           onClick={gerarPDF}
           className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded font-medium"
         >
           📥 Baixar Relatório PDF
         </button>
-      )}
+        <button
+          onClick={() => router.push('/dashboard')}
+          className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded font-medium"
+        >
+          ⬅ Voltar à Página Inicial
+        </button>
+      </div>
     </main>
   );
 }
