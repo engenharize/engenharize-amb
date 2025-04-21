@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { buscarClientes } from '@/lib/clientes.service';
 
 export default function VistoriaSelectCliente() {
   const [clientes, setClientes] = useState<any[]>([]);
@@ -9,11 +10,11 @@ export default function VistoriaSelectCliente() {
   const [relatorios, setRelatorios] = useState<any[]>([]);
   const router = useRouter();
 
+  // Busca os clientes do Supabase
   useEffect(() => {
-    const salvos = localStorage.getItem('clientes');
-    if (salvos) {
-      setClientes(JSON.parse(salvos));
-    }
+    buscarClientes().then(setClientes).catch((err) => {
+      console.error('Erro ao buscar clientes:', err);
+    });
   }, []);
 
   useEffect(() => {

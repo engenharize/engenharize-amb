@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { buscarClientes } from '@/lib/clientes.service';
 
 export default function GerarPDF() {
   const [conteudoPronto, setConteudoPronto] = useState(false);
@@ -13,15 +14,23 @@ export default function GerarPDF() {
   const pdfRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const dados = JSON.parse(localStorage.getItem('vistoriaRascunho') || '{}');
-    const correcoes = JSON.parse(localStorage.getItem('correcoesVistoria') || '[]');
-    const fotos = JSON.parse(localStorage.getItem('fotosVistoria') || '[]');
-    const consideracoes = localStorage.getItem('consideracoesFinais') || '';
-    setDados(dados);
-    setCorrecoes(correcoes);
-    setFotos(fotos);
-    setConsideracoes(consideracoes);
-    setConteudoPronto(true);
+    const rascunho = JSON.parse(localStorage.getItem('vistoriaRascunho') || '{}');
+    const clienteNome = rascunho.cliente;
+
+    buscarClientes()
+      .then((clientes) => {
+        const cliente = clientes.find((c: any) => c.nome === clienteNome);
+        const correcoes = JSON.parse(localStorage.getItem('correcoesVistoria') || '[]');
+        const fotos = JSON.parse(localStorage.getItem('fotosVistoria') || '[]');
+        const consideracoes = localStorage.getItem('consideracoesFinais') || '';
+
+        setDados({ ...rascunho, cliente });
+        setCorrecoes(correcoes);
+        setFotos(fotos);
+        setConsideracoes(consideracoes);
+        setConteudoPronto(true);
+      })
+      .catch((err) => console.error('Erro ao buscar cliente:', err));
   }, []);
 
   const gerarPDF = async () => {
@@ -63,7 +72,7 @@ export default function GerarPDF() {
         <h2 style={{ fontSize: '18px', borderBottom: '1px solid #ccc', paddingBottom: '4px' }}>
           Relatório de Vistoria
         </h2>
-        <p><strong>Cliente:</strong> {dados.cliente}</p>
+        <p><strong>Cliente:</strong> {dados.cliente?.nome}</p>
         <p><strong>Data:</strong> {dados.data}</p>
         <p><strong>Objetivo:</strong> {dados.objetivo}</p>
         <p><strong>Assuntos Abordados:</strong> {dados.assuntos}</p>

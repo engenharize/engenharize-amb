@@ -5,6 +5,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Document, Packer, Paragraph, Table, TableRow, TableCell, HeadingLevel, TextRun } from 'docx';
 import { saveAs } from 'file-saver';
+import { buscarClientePorNome } from '@/lib/clientes.service';
 
 export default function GerarPDFPage() {
   const [dados, setDados] = useState<any>(null);
@@ -12,14 +13,19 @@ export default function GerarPDFPage() {
 
   useEffect(() => {
     const nome = localStorage.getItem('clienteSelecionado');
-    const listaClientes = JSON.parse(localStorage.getItem('clientes') || '[]');
-    const clienteObj = listaClientes.find((c: any) => c.nome === nome);
     const residuos = JSON.parse(localStorage.getItem('residuosGerados') || '[]');
     const indicadores = JSON.parse(localStorage.getItem('indicadoresAmbientais') || '{}');
     const aspectos = JSON.parse(localStorage.getItem('aspectosImpactos') || '[]');
     const fotos = JSON.parse(localStorage.getItem('relatorioFotografico') || '[]');
     const consideracoes = localStorage.getItem('consideracoesFinais') || '';
-    setDados({ cliente: clienteObj, residuos, indicadores, aspectos, fotos, consideracoes });
+
+    if (nome) {
+      buscarClientePorNome(nome).then((cliente) => {
+        setDados({ cliente, residuos, indicadores, aspectos, fotos, consideracoes });
+      }).catch((error) => {
+        console.error('Erro ao buscar cliente do Supabase:', error);
+      });
+    }
   }, []);
 
   const gerarPDF = () => {

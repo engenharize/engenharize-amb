@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { salvarCliente } from '../../lib/clientes.service';
 
 export default function CadastrarCliente() {
   const [formData, setFormData] = useState({
@@ -19,12 +20,27 @@ export default function CadastrarCliente() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Salva localmente
     const clientesSalvos = localStorage.getItem('clientes');
     const lista = clientesSalvos ? JSON.parse(clientesSalvos) : [];
     const novaLista = [...lista, formData];
     localStorage.setItem('clientes', JSON.stringify(novaLista));
+
+    // Salva no Supabase
+    try {
+      await salvarCliente({
+        nome: formData.nome,
+        cnpj: formData.cnpj,
+        endereco: formData.endereco,
+        proprietario: formData.proprietario,
+      });
+    } catch (error: any) {
+      console.error('Erro ao salvar no Supabase:', error.message);
+    }
+
     alert('Cliente cadastrado com sucesso!');
     setFormData({
       nome: '',
