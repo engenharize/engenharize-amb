@@ -17,3 +17,14 @@ export async function buscarClientes() {
   if (error) throw new Error(error.message);
   return data;
 }
+
+export async function buscarClientePorNome(nome: string) {
+  const { data, error } = await supabaseClient
+    .from('clientes')
+    .select('*')
+    .eq('nome', nome)
+    .single();
+
+  if (error) throw new Error(error.message);
+  return data;
+}
