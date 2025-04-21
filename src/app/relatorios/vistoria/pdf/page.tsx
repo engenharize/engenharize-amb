@@ -73,6 +73,8 @@ export default function GerarPDF() {
           Relatório de Vistoria
         </h2>
         <p><strong>Cliente:</strong> {dados.cliente?.nome}</p>
+        <p><strong>CNPJ:</strong> {dados.cliente?.cnpj}</p>
+        <p><strong>Endereço:</strong> {dados.cliente?.endereco}</p>
         <p><strong>Data:</strong> {dados.data}</p>
         <p><strong>Objetivo:</strong> {dados.objetivo}</p>
         <p><strong>Assuntos Abordados:</strong> {dados.assuntos}</p>
